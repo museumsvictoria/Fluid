@@ -1,0 +1,17 @@
+{
+    "IsLeft": true,
+    "PeerIP": "136.154.30.198",
+    "OSCEndpoint": "136.154.24.241",
+    "OSCPort": 9001,
+    "EdgeInset": 3,
+    "SyncFrameInterval": 600,
+    "SceneFile" : "FluidDesigner.json",
+    "EncoderMappings": [
+        ["Emitter1", "Obs-Oval"],
+        ["Emitter2", "Obs-Egg"],
+        ["Emitter3", "Obs-circle"],
+        ["Emitter4", "Obs-FlatThingie"],
+        ["Emitter5", "Obs-Thingie"],
+        ["Emitter6", "Obs-RoundedRect"]
+    ]
+}
