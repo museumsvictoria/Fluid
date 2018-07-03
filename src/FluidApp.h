@@ -44,7 +44,7 @@ protected:
     
     void                        RenderScene         ( );
     void                        RenderOverlays      ( );
-    void                        RenderUI	        ( );
+    void                        RenderUI            ( );
     
     void                        ApplyEncoders       ( );
     void                        BroadcastOSCChanges ( );

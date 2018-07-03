@@ -379,7 +379,7 @@ namespace Fluid
             kFont->drawString( t.first, r.getLowerLeft() + vec2 ( 8 ) );
             
             r += vec2 ( r.getWidth(), 0 );
-		}
+        }
     }
     
     void Sim::ApplyForces ( )

@@ -33,7 +33,7 @@ public:
     
     float               Scale{0.5f};
 
-	float				DensityAlphaMultiplier{1.0f};
+    float               DensityAlphaMultiplier{1.0f};
 
     Time::FloatProperty Alpha{1.0f};
     Time::FloatProperty AlphaMin{0.0f};

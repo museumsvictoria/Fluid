@@ -29,20 +29,20 @@ namespace Fluid
         float                       Radius{1.0f};
         float                       Temperature{10.0f};
         float                       Density{1.0f};
-		
+        
         Force                       ( ) { }
-		Force                       ( const ci::vec2& position, const ci::vec2& velocity, const ci::Colorf& color, float radius = 1.0f, float temperature = 10.0f, float density = 1.0f )
-		: Position ( position )
-		, Velocity ( velocity )
-		, Color ( color )
-		, Radius ( radius )
-		, Temperature ( temperature )
-		, Density ( density )
-		{ }
+        Force                       ( const ci::vec2& position, const ci::vec2& velocity, const ci::Colorf& color, float radius = 1.0f, float temperature = 10.0f, float density = 1.0f )
+        : Position ( position )
+        , Velocity ( velocity )
+        , Color ( color )
+        , Radius ( radius )
+        , Temperature ( temperature )
+        , Density ( density )
+        { }
         
         Force                       ( const ci::JsonTree& tree, const ci::vec2& size = ci::vec2(1) );
         ci::JsonTree                ToJson ( const ci::vec2& size = ci::vec2(1) ) const;
-			
+            
     };
     
     struct ScopedFboDraw
@@ -89,7 +89,7 @@ namespace Fluid
         
         std::vector<Force>&         ConstantForces      ( ) { return _constantForces; };
         
-        float                   	DensityDissipation;
+        float                       DensityDissipation;
         float                       VelocityDissipation;
         float                       TemperatureDissipation;
         float                       PressureDissipation;
@@ -124,7 +124,7 @@ namespace Fluid
         void                        ResetGLState        ( ) const;
         void                        ClearBuffer         ( const ci::gl::FboRef& buffer, const ci::ColorAf& clearColor = ci::ColorAf::black() );
         
-        ci::gl::GlslProgRef     	_advectShader;
+        ci::gl::GlslProgRef         _advectShader;
         ci::gl::GlslProgRef         _jacobiShader;
         ci::gl::GlslProgRef         _subtractGradientShader;
         ci::gl::GlslProgRef         _computeDivergenceShader;

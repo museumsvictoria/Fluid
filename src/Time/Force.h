@@ -54,7 +54,7 @@ namespace Time
         
         void                        Inspect             ( );
         virtual ElementType         GetType             ( ) const = 0;
-	
+    
     protected:
         
         virtual void                InternalInspect     ( );

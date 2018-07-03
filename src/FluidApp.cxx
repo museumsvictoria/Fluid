@@ -37,7 +37,7 @@ namespace
     
     bool                     kDrawBuffers{false};
     bool                     kMousePaint{false};
-	bool                     kDrawAttractors{false};
+    bool                     kDrawAttractors{false};
     
     float                    kScale         = 0.25f;
     
@@ -56,7 +56,7 @@ void FluidApp::Init ( app::App::Settings * settings )
     #endif
 
 #ifdef STANDALONE_DEMO
-	settings->setMultiTouchEnabled(true);
+    settings->setMultiTouchEnabled(true);
 #endif
 }
 
@@ -78,13 +78,13 @@ void FluidApp::OnSetup ( )
 {
     ui::initialize();
 
-	hideCursor();
+    hideCursor();
 
-	#ifdef CINDER_MSW
-	// Disable crash dialog
-	DWORD dwMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
-	SetErrorMode(dwMode | SEM_NOGPFAULTERRORBOX);
-	#endif
+    #ifdef CINDER_MSW
+    // Disable crash dialog
+    DWORD dwMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
+    SetErrorMode(dwMode | SEM_NOGPFAULTERRORBOX);
+    #endif
     
     _particles.Init( 9 );
     _particles.Alpha.ValueAtFrame(0) = 0.0f;
@@ -159,91 +159,91 @@ void FluidApp::OnSetup ( )
         _sequencer.OnLoop ( [&] { _syncTransport->SendEvent( "/sync", _sequencer.Time() ); });
     }
 
-	_flowField->Alpha = 0.6f;
-	_flowField->ColorWeight = 0.85f;
-	_particles.Alpha = 1.0f; 
-	_particles.AlphaMin = 1.0f;
-	_fluid->Alpha = 0.115f;
-	_fluid->Metalness = 0.0f;
+    _flowField->Alpha = 0.6f;
+    _flowField->ColorWeight = 0.85f;
+    _particles.Alpha = 1.0f; 
+    _particles.AlphaMin = 1.0f;
+    _fluid->Alpha = 0.115f;
+    _fluid->Metalness = 0.0f;
 
 #ifdef STANDALONE_DEMO
-	
-	for ( int i = 0; i < 8; i++ )
-	{
-		float a = toRadians ( i * (360.0f / 8.0f) );
-		vec2 p;
-		p.x = std::cos(a) * _fluid->Size().x * 0.4f;
-		p.y = std::sin(a) * _fluid->Size().y * 0.4f;
-			
-		Fluid::Force f;
-		f.Position = vec2(_fluid->Size()) * 0.5f + p;
-		f.Density = 1.0f;
-		f.Radius = 16.0f;
-		f.Velocity = -glm::normalize(p);
-		f.Color = Color ( { randFloat(0.1, 0.8), randFloat(0.1, 0.8), randFloat(0.1, 0.8) } );
+    
+    for ( int i = 0; i < 8; i++ )
+    {
+        float a = toRadians ( i * (360.0f / 8.0f) );
+        vec2 p;
+        p.x = std::cos(a) * _fluid->Size().x * 0.4f;
+        p.y = std::sin(a) * _fluid->Size().y * 0.4f;
+            
+        Fluid::Force f;
+        f.Position = vec2(_fluid->Size()) * 0.5f + p;
+        f.Density = 1.0f;
+        f.Radius = 16.0f;
+        f.Velocity = -glm::normalize(p);
+        f.Color = Color ( { randFloat(0.1, 0.8), randFloat(0.1, 0.8), randFloat(0.1, 0.8) } );
 
-		_fluid->AddConstantForce ( f );
-	}
+        _fluid->AddConstantForce ( f );
+    }
 
-	getWindow()->getSignalTouchesMoved().connect ( [=] ( app::TouchEvent event )
-	{
-		for ( auto& touch : event.getTouches() )
-		{
-			vec2 delta = touch.getPrevPos() - touch.getPos();
+    getWindow()->getSignalTouchesMoved().connect ( [=] ( app::TouchEvent event )
+    {
+        for ( auto& touch : event.getTouches() )
+        {
+            vec2 delta = touch.getPrevPos() - touch.getPos();
 
-			float xPos = lmap(touch.getPos().x, 0.0f, (float)getWindowWidth(), 0.1f, 0.8f);
-			float yPos = lmap(touch.getPos().y, 0.0f, (float)getWindowHeight(), 0.1f, 0.8f);
+            float xPos = lmap(touch.getPos().x, 0.0f, (float)getWindowWidth(), 0.1f, 0.8f);
+            float yPos = lmap(touch.getPos().y, 0.0f, (float)getWindowHeight(), 0.1f, 0.8f);
 
-			float blue = std::sin(getElapsedSeconds() * 0.2f) * 0.5f + 0.5f;
-			blue = lmap(blue, 0.0f, 1.0f, 0.1f, 0.8f);
+            float blue = std::sin(getElapsedSeconds() * 0.2f) * 0.5f + 0.5f;
+            blue = lmap(blue, 0.0f, 1.0f, 0.1f, 0.8f);
 
-			float length = glm::length(delta);
+            float length = glm::length(delta);
 
-			if (length > 2.0f)
-			{
-				if (length > 10.0f) delta = glm::normalize(delta) * 10.0f;
+            if (length > 2.0f)
+            {
+                if (length > 10.0f) delta = glm::normalize(delta) * 10.0f;
 
-				Fluid::Force f;
-				f.Position = touch.getPos();
-				f.Density = 0.8f;
-				f.Radius = 32.0f;
-				f.Velocity = -delta;
-				f.Color = Color(xPos, yPos, blue);
+                Fluid::Force f;
+                f.Position = touch.getPos();
+                f.Density = 0.8f;
+                f.Radius = 32.0f;
+                f.Velocity = -delta;
+                f.Color = Color(xPos, yPos, blue);
 
-				_fluid->AddTemporalForce(f);
-			}
-		}
-	});
+                _fluid->AddTemporalForce(f);
+            }
+        }
+    });
 
-	getWindow()->getSignalMouseDrag().connect([=](app::MouseEvent event)
-	{
-		static vec2 prev = event.getPos();
-		vec2 now = event.getPos();
-		vec2 delta = prev - now;
-		prev = now;
+    getWindow()->getSignalMouseDrag().connect([=](app::MouseEvent event)
+    {
+        static vec2 prev = event.getPos();
+        vec2 now = event.getPos();
+        vec2 delta = prev - now;
+        prev = now;
 
-		float xPos = lmap(now.x, 0.0f, (float)getWindowWidth(), 0.1f, 0.8f);
-		float yPos = lmap(now.y, 0.0f, (float)getWindowHeight(), 0.1f, 0.8f);
+        float xPos = lmap(now.x, 0.0f, (float)getWindowWidth(), 0.1f, 0.8f);
+        float yPos = lmap(now.y, 0.0f, (float)getWindowHeight(), 0.1f, 0.8f);
 
-		float blue = std::sin(getElapsedSeconds() * 0.2f) * 0.5f + 0.5f;
-		blue = lmap(blue, 0.0f, 1.0f, 0.1f, 0.8f);
+        float blue = std::sin(getElapsedSeconds() * 0.2f) * 0.5f + 0.5f;
+        blue = lmap(blue, 0.0f, 1.0f, 0.1f, 0.8f);
 
-		float length = glm::length(delta);
+        float length = glm::length(delta);
 
-		if ( length > 2.0f )
-		{
-			if ( length > 10.0f ) delta = glm::normalize(delta) * 10.0f;
+        if ( length > 2.0f )
+        {
+            if ( length > 10.0f ) delta = glm::normalize(delta) * 10.0f;
 
-			Fluid::Force f;
-			f.Position = now;
-			f.Density = 0.8f;
-			f.Radius = 32.0f;
-			f.Velocity = -delta;
-			f.Color = Color( xPos, yPos, blue );
-		
-			_fluid->AddTemporalForce ( f );
-		}
-	});
+            Fluid::Force f;
+            f.Position = now;
+            f.Density = 0.8f;
+            f.Radius = 32.0f;
+            f.Velocity = -delta;
+            f.Color = Color( xPos, yPos, blue );
+        
+            _fluid->AddTemporalForce ( f );
+        }
+    });
 
 #endif
 }
@@ -258,11 +258,11 @@ void FluidApp::InitFluidAtScale ( float scale )
     _fluid->EnableObstacles(true);
     _fluid->ObstacleRenderHandler = [=] ( const Rectf& rect, bool topLeft )
     {
-		if ( _fluid->AreObstaclesEnabled() )
-		{
-			gl::ScopedMatrices m;
+        if ( _fluid->AreObstaclesEnabled() )
+        {
+            gl::ScopedMatrices m;
             gl::setMatricesWindow ( rect.getSize(), topLeft );
-			gl::scale ( vec2 ( rect.getWidth() / (float)getWindowWidth() ) );
+            gl::scale ( vec2 ( rect.getWidth() / (float)getWindowWidth() ) );
             
             // if topLeft it's the display render
             float overhang = topLeft ? 1.035f : 1.0f;
@@ -270,7 +270,7 @@ void FluidApp::InitFluidAtScale ( float scale )
             {
                 o->Draw( overhang );
             }
-		}
+        }
         
         if ( !topLeft && _edgeInset > 0 )
         {
@@ -293,8 +293,8 @@ void FluidApp::OnUpdate ( )
 #ifndef STANDALONE_DEMO
     if ( app::getElapsedFrames() == 1 || app::getElapsedFrames() % 60 == 0 )
     {
-		try
-		{
+        try
+        {
             auto fullFile = kFolderToWatch / kFileToWatch;
             if ( fs::exists ( fullFile ) )
             {
@@ -313,11 +313,11 @@ void FluidApp::OnUpdate ( )
                     OnReload    ( );
                 }
             }
-		}
+        }
         catch ( const std::exception& e )
-		{
+        {
             std::cout << e.what() << std::endl;
-		}
+        }
     }
 #else
 
@@ -327,7 +327,7 @@ void FluidApp::OnUpdate ( )
     
     if ( _running )
     {
-		float t = _sequencer.Time();
+        float t = _sequencer.Time();
 
 #ifndef STANDALONE_DEMO
         _sequencer.StepBy( 1.0 / 60.0f );
@@ -347,7 +347,7 @@ void FluidApp::OnUpdate ( )
         }
 #endif
 
-		_particles.DensityAlphaMultiplier = _fluid->Alpha.ValueAtTime(t);
+        _particles.DensityAlphaMultiplier = _fluid->Alpha.ValueAtTime(t);
         _particles.Update ( 1.0 / 60.0, _fluid->GetVelocity() );
         _fluid->Update ( 1.0 / 60.0 );
         
@@ -458,13 +458,13 @@ void FluidApp::HandleKeyDown ( KeyEvent event )
         case KeyEvent::KEY_BACKQUOTE :
         {
             _uiEnabled = !_uiEnabled;
-			if ( _uiEnabled )
-			{
-				showCursor();
-			}else
-			{
-				hideCursor();
-			}
+            if ( _uiEnabled )
+            {
+                showCursor();
+            }else
+            {
+                hideCursor();
+            }
             break;
         }
             
@@ -506,16 +506,16 @@ void FluidApp::RenderScene ( )
         _fluid->Draw ( getWindowBounds() );
     }
     
-	if ( true )
-	{
-		gl::ScopedDepth depth { false };
-		gl::ScopedBlendAlpha blend;
-		if ( _fluid->ObstacleRenderHandler )
-		{
-			gl::ScopedColor color { Colorf::black() };
-			_fluid->ObstacleRenderHandler ( getWindowBounds(), true );
-		}
-	}
+    if ( true )
+    {
+        gl::ScopedDepth depth { false };
+        gl::ScopedBlendAlpha blend;
+        if ( _fluid->ObstacleRenderHandler )
+        {
+            gl::ScopedColor color { Colorf::black() };
+            _fluid->ObstacleRenderHandler ( getWindowBounds(), true );
+        }
+    }
     
     _flowField->Draw ( );
     _particles.Draw( _fluid->GetDensity() );
@@ -532,14 +532,14 @@ void FluidApp::RenderOverlays ( )
     
     float t = _sequencer.Time();
     
-	if ( kDrawAttractors )
-	{
-		for ( auto& a : _sequencer.GetAttractors() )
-		{
-			auto& seq = a->ForceAt ( t ) > 0 ? kAttractorInSeq : kAttractorOutSeq;
-			seq.DrawInRect( a->GetBoundsAt( t ) );
-		}
-	}
+    if ( kDrawAttractors )
+    {
+        for ( auto& a : _sequencer.GetAttractors() )
+        {
+            auto& seq = a->ForceAt ( t ) > 0 ? kAttractorInSeq : kAttractorOutSeq;
+            seq.DrawInRect( a->GetBoundsAt( t ) );
+        }
+    }
 }
 
 void FluidApp::RenderUI ( )
@@ -584,7 +584,7 @@ void FluidApp::RenderUI ( )
     }
     
     ui::Text ( "FPS: %.2f", getAverageFps() );
-	if ( ui::Button ( "Quit" ) ) quit();
+    if ( ui::Button ( "Quit" ) ) quit();
     ui::Dummy( ImVec2(0, 10) );
     ui::Checkbox ( "Simulate", &_running );
     
@@ -613,7 +613,7 @@ void FluidApp::RenderUI ( )
         
         ui::Checkbox( "Draw Debug Buffers", &kDrawBuffers );
         ui::Checkbox( "Mouse Injects Forces", &kMousePaint );
-		ui::Checkbox( "Draw Attractors", &kDrawAttractors );
+        ui::Checkbox( "Draw Attractors", &kDrawAttractors );
         
         // @TODO(Andrew): flip y UV of line flow field
         _fluid->Inspect();

@@ -17,19 +17,19 @@ static const float kMaxValue = 4096.0f;
 
 RotaryEncoders::RotaryEncoders()
 {
-	try
-	{
+    try
+    {
 #ifdef CINDER_COCOA
-		_serial = Serial::create(Serial::findDeviceByNameContains("wchusbserial1"), 9600);
+        _serial = Serial::create(Serial::findDeviceByNameContains("wchusbserial1"), 9600);
 #else
-		_serial = Serial::create(Serial::findDeviceByNameContains("COM7"), 9600);
+        _serial = Serial::create(Serial::findDeviceByNameContains("COM7"), 9600);
 #endif
-		_updateConnection = app::App::get()->getSignalUpdate().connect([=] { Tick(); });
-	}
-	catch (const std::exception& e)
-	{
+        _updateConnection = app::App::get()->getSignalUpdate().connect([=] { Tick(); });
+    }
+    catch (const std::exception& e)
+    {
 
-	}
+    }
     
     for ( int i = 0; i < NumValues(); i++ )
     {
@@ -42,53 +42,53 @@ RotaryEncoders::RotaryEncoders()
 
 void RotaryEncoders::Tick()
 {
-	static std::stringstream kRunningBuffer;
+    static std::stringstream kRunningBuffer;
 
-	if (_serial->getNumBytesAvailable() > 0)
-	{
-		auto numBytes = _serial->getNumBytesAvailable();
+    if (_serial->getNumBytesAvailable() > 0)
+    {
+        auto numBytes = _serial->getNumBytesAvailable();
 
-		std::string bytes;
-		bytes.resize(numBytes);
+        std::string bytes;
+        bytes.resize(numBytes);
 
-		_serial->readBytes((char *)bytes.data(), bytes.size());
+        _serial->readBytes((char *)bytes.data(), bytes.size());
 
-		auto lines = ci::split(bytes, "\r\n");
+        auto lines = ci::split(bytes, "\r\n");
 
-		for (int i = 0; i < lines.size() - 1; i++)
-		{
-			auto& line = lines[i];
-			if (!line.empty())
-			{
-				if (line[0] != ',' && line.find(",") != std::string::npos)
-				{
-					auto lineParts = ci::split(line, ",");
-					int index = -1;
-					int value = -1;
+        for (int i = 0; i < lines.size() - 1; i++)
+        {
+            auto& line = lines[i];
+            if (!line.empty())
+            {
+                if (line[0] != ',' && line.find(",") != std::string::npos)
+                {
+                    auto lineParts = ci::split(line, ",");
+                    int index = -1;
+                    int value = -1;
 
-					try
-					{
-						index = boost::lexical_cast<int>(lineParts[0]);
-						value = boost::lexical_cast<int>(lineParts[1]);
-					}
-					catch (const std::exception& e)
-					{
+                    try
+                    {
+                        index = boost::lexical_cast<int>(lineParts[0]);
+                        value = boost::lexical_cast<int>(lineParts[1]);
+                    }
+                    catch (const std::exception& e)
+                    {
 
-					}
+                    }
 
-					if (index >= 0 && index < _values.size())
-					{
-						if (value >= 0 && value < kMaxValue)
-						{
+                    if (index >= 0 && index < _values.size())
+                    {
+                        if (value >= 0 && value < kMaxValue)
+                        {
                             _values[index] = static_cast<float>(value);
-						}
-					}
-				}
-			}
-		}
+                        }
+                    }
+                }
+            }
+        }
 
-		_serial->flush();
-	}
+        _serial->flush();
+    }
 }
 
 void RotaryEncoders::Inspect ( )
@@ -165,16 +165,16 @@ float RotaryEncoders::ValueAt(int index) const
     if ( zeroedValue < 0.0f      ) zeroedValue += kMaxValue;
     if ( zeroedValue > kMaxValue ) zeroedValue -= kMaxValue;
     
-	return zeroedValue / kMaxValue;
+    return zeroedValue / kMaxValue;
 }
 
 RotaryEncoders::~RotaryEncoders()
 {
-	_updateConnection.disconnect();
-	if (_serial)
-	{
+    _updateConnection.disconnect();
+    if (_serial)
+    {
 
-	}
-	_serial = nullptr;
+    }
+    _serial = nullptr;
 }
 

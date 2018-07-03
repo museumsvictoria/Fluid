@@ -17,25 +17,25 @@ class RotaryEncoders
 {
 public:
 
-	RotaryEncoders          ( );
-	~RotaryEncoders         ( );
+    RotaryEncoders          ( );
+    ~RotaryEncoders         ( );
 
-	int                     NumValues   (  ) const { return static_cast<int>(_values.size()); };
-	float                   ValueAt     (int index) const;
+    int                     NumValues   (  ) const { return static_cast<int>(_values.size()); };
+    float                   ValueAt     (int index) const;
 
     bool                    IsConnected ( ) const { return _serial != nullptr; }
     void                    Inspect     ( );
 
 protected:
 
-	void                    Tick        ( );
+    void                    Tick        ( );
     void                    Save        ( );
     void                    Load        ( );
 
     std::array<float, 6>    _zeroes;
-	std::array<float, 6>    _values;
-	ci::SerialRef           _serial{ nullptr };
-	ci::signals::Connection _updateConnection;
+    std::array<float, 6>    _values;
+    ci::SerialRef           _serial{ nullptr };
+    ci::signals::Connection _updateConnection;
 };
 
 #endif /* RotaryEncoders_h */

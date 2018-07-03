@@ -134,7 +134,7 @@ void ParticleSystem::Update ( float dt, const ci::gl::Texture2dRef& velocityFiel
     float size = MaxParticleSize.ValueAtTime(t);
     
     _renderShader->uniform ( "uGlobalAlpha", Alpha.ValueAtTime(t));
-	_renderShader->uniform ( "uDensityContribution", DensityAlphaMultiplier );
+    _renderShader->uniform ( "uDensityContribution", DensityAlphaMultiplier );
     
     if ( alpha > 0.0f && size > 0.0f )
     {
