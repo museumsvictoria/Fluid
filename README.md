@@ -15,6 +15,24 @@ Features of the application include:
 - Interactions with the simulation are in the form of emitters, attractors and obstacles
 - All simulation parameters are exposed via an admin GUI that can be accessed using a mouse
 
+## Building App
+
+C++ is difficult to compile (for legacy reasons) and has no official build system. Snepo has made a platform specific project for mac and windows. To successfully build the app check out cinder, check out the project, open the visual studio solution on windows or Xcode project on mac and press build. 
+
+Cinder 0.9.1 needs to be at the same folder level as the project. 
+
+```
+git clone --recursive https://github.com/cinder/Cinder.git
+cd cinder
+git checkout release_v0.9.1
+```
+
+The folder structure will look like this, where the cinder folder has been checked out using the above steps. 
+
+![Build Folders](https://scienceworks.s3.amazonaws.com/documentation/build-folders.png)
+
+On windows Snepo used visual studio community 2017, but it will probably work with 2015 too. (Platform toolset v140+, c++11/14)
+
 ## Museum Setup
 
 ### Process Management
