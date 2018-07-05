@@ -3,7 +3,7 @@
 A cross-platform, fluid dynamics simulation visualisation developed by
 [Snepo Research](https://www.snepo.com) using the [Cinder Framework](https://cinder.org). This software was commissioned by Museums Victoria for an interactive digital installation at *Beyond Perception: Seeing the Unseen*, a permanent exhibition at Scienceworks in Melbourne, Australia which opened in May 2018.
 
-![Fluid Dynamics Screenshot](https://scienceworks.s3.amazonaws.com/documentation/fluid.png)
+![Fluid Dynamics Screenshot](https://scienceworks.s3.amazonaws.com/documentation/fluid.jpg)
 
 The application was designed to run on 2 high performance Windows 10 PC's each with 3 connected HD LCD screens. 
 Features of the application include:
