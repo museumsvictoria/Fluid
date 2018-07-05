@@ -104,11 +104,33 @@ All emitters, attractors and obstacles are time squenced using this tool or by d
 
 The options are relatively self explainitory, below are descritions of the main parameters:
 
+**Attractor Params**
+
 - Postion - changes the X, Y Value of an object at a Time using an animation curve called Ease Curve
 - Radius - the size of the object in pixels, if the radius is less than 0.01 it ceases to effect the simulation
 - Force - value fed into the simulation formula to effect the fluid
 
-![Sequencer](https://scienceworks.s3.amazonaws.com/documentation/sequencer.png)
+![Sequencer Attract](https://scienceworks.s3.amazonaws.com/documentation/sequence-attract.png)
+
+**Obstacle Params**
+
+- Postion - changes the X, Y Value of an object at a Time using an animation curve called Ease Curve
+- Radius - the size of the object in pixels, if the radius is less than 0.01 it ceases to effect the simulation
+- Rotation - angle of the obstacle, this is controlled by rotary encoders so can be ingored
+- Texture - the shape of the obstacle from a pre-defined list
+
+![Sequencer Attract](https://scienceworks.s3.amazonaws.com/documentation/sequence-obs.png)
+
+**Emitter Params**
+
+- Postion - changes the X, Y Value of an object at a Time using an animation curve called Ease Curve
+- Radius - the size of the object in pixels, if the radius is less than 0.01 it ceases to effect the simulation
+- Velocity - value fed into the simulation formula to effect the fluid as it is emmitted
+- Color - the RGB color of the fluid
+- Temperature - how strong the color is from invisible to 100% opacity
+- Density - incombination with Temperature this controls how "much" fluid comes out at any given radius
+
+![Sequencer Attract](https://scienceworks.s3.amazonaws.com/documentation/sequence-emmit.png)
 
 **Fluid Simulation Settings**
 
