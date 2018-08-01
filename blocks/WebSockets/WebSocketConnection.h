@@ -51,7 +51,7 @@
 #define BOOST_DATE_TIME_NO_LIB
 #define BOOST_REGEX_NO_LIB
 
-#include "asio.hpp"
+//#include "asio.hpp"
 #include "websocketpp/common/random.hpp"
 #include "websocketpp/common/thread.hpp"
 #include "websocketpp/common/connection_hdl.hpp"

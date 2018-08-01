@@ -45,6 +45,9 @@
     <Filter Include="Source Files\Time">
       <UniqueIdentifier>{61def112-4929-461a-97bb-af250aae6d0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blocks\WebSockets">
+      <UniqueIdentifier>{32b49fb5-6327-4621-80a8-b9b5e8502812}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -116,6 +119,15 @@
     <ClCompile Include="Precompiled.cxx">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClInclude Include="..\blocks\WebSockets\WebSocketClient.h">
+      <Filter>Blocks\WebSockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\WebSockets\WebSocketConnection.h">
+      <Filter>Blocks\WebSockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\NetworkedFluidApp.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -164,5 +176,16 @@
     <None Include="Precompiled.pch">
       <Filter>Header Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\blocks\WebSockets\WebSocketClient.cpp">
+      <Filter>Blocks\WebSockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\WebSockets\WebSocketConnection.cpp">
+      <Filter>Blocks\WebSockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NetworkedFluidApp.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
