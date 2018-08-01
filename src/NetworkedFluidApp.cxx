@@ -46,7 +46,7 @@ bool NetworkedFluidApp::User::Dead ( ) const
 /// NetworkedFluidApp
 ///
 
-static float kScale = 0.5f;
+static float kScale = 0.25f;
 
 NetworkedFluidApp::NetworkedFluidApp ( )
 {
