@@ -70,7 +70,7 @@ void NetworkedFluidApp::OnSetup ( )
     
     _fluid = Fluid::Sim::Create( getWindowWidth(), getWindowHeight(), kScale );
     _fluid->Gravity.OverrideValue( vec2(0) );
-    _fluid->Alpha = 0.2f;
+    _fluid->Alpha = 0.08f;
     _fluid->Metalness = 0.0;
     
     _particles.Init( 9 );
