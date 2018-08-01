@@ -70,8 +70,8 @@ void NetworkedFluidApp::OnSetup ( )
     
     _fluid = Fluid::Sim::Create( getWindowWidth(), getWindowHeight(), kScale );
     _fluid->Gravity.OverrideValue( vec2(0) );
-    _fluid->Alpha = 0.08f;
-    _fluid->Metalness = 0.0;
+    _fluid->Alpha.OverrideValue(0.08f);
+    _fluid->Metalness.OverrideValue(0.0f);
     
     _particles.Init( 9 );
     _particles.Scale = kScale;
@@ -215,7 +215,7 @@ void NetworkedFluidApp::OnUpdate ( )
             force.Position = user.Position * vec2 ( getWindowSize() );
             force.Color = user.Color;
             force.Radius = user.Radius;
-            
+            force.Density = 0.8f;
             force.Velocity = vec2 { std::cos ( user.Angle ), std::sin ( user.Angle ) };
             _fluid->AddTemporalForce( force );
             it++;
