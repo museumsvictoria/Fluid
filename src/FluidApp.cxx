@@ -631,6 +631,10 @@ void FluidApp::OnCleanup ( )
 
 }
 
-#ifndef COMPILING_NETWORKED_FLUID
-CINDER_APP( FluidApp, RendererGl ( RendererGl::Options().msaa ( 8 ) ), FluidApp::Init )
+#ifdef CINDER_MSW
+    #ifndef COMPILING_NETWORKED_FLUID
+        CINDER_APP( FluidApp, RendererGl ( RendererGl::Options().msaa ( 8 ) ), FluidApp::Init )
+    #endif
+#else
+    CINDER_APP( FluidApp, RendererGl ( RendererGl::Options().msaa ( 8 ) ), FluidApp::Init )
 #endif

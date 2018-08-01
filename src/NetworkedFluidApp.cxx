@@ -272,6 +272,10 @@ void Init ( App::Settings * settings )
     settings->setFullScreen();
 }
 
-#ifdef COMPILING_NETWORKED_FLUID
-CINDER_APP( NetworkedFluidApp, RendererGl ( RendererGl::Options().msaa(8) ), Init )
+#ifdef CINDER_MSW
+    #ifdef COMPILING_NETWORKED_FLUID
+        CINDER_APP( NetworkedFluidApp, RendererGl ( RendererGl::Options().msaa(8) ), Init )
+    #endif
+#else
+    CINDER_APP( NetworkedFluidApp, RendererGl ( RendererGl::Options().msaa(8) ), Init )
 #endif
