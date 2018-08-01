@@ -6,6 +6,7 @@
     "EdgeInset": 3,
     "SyncFrameInterval": 600,
     "SceneFile" : "FluidDesigner.json",
+    "WebSocketEndpoint" : "ws://scienceworks-production-new.ap-southeast-2.elasticbeanstalk.com/events",
     "EncoderMappings": [
         ["Emitter1", "Obs-Oval"],
         ["Emitter2", "Obs-Egg"],
