@@ -14,6 +14,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+#define RUN_WINDOWED
+
 ///
 /// User
 
@@ -21,8 +23,8 @@ void NetworkedFluidApp::User::Unpack ( const IStreamMemRef& stream )
 {
     Timestamp = app::getElapsedSeconds();
     
-    stream->read( &Position.x );
-    stream->read( &Position.y );
+    stream->read( &Position.x ); //
+    stream->read( &Position.y ); //
     stream->read( &Angle );
     stream->read( &Radius );
     
@@ -51,7 +53,9 @@ static float kScale = 0.25f;
 NetworkedFluidApp::NetworkedFluidApp ( )
 {
 #ifdef CINDER_MAC
-    getWindow()->spanAllDisplays();
+    #ifndef RUN_WINDOWED
+        getWindow()->spanAllDisplays();
+    #endif
 #endif
     OnSetup ( );
     
@@ -70,16 +74,19 @@ void NetworkedFluidApp::OnSetup ( )
     
     _fluid = Fluid::Sim::Create( getWindowWidth(), getWindowHeight(), kScale );
     _fluid->Gravity.OverrideValue( vec2(0) );
-    _fluid->Alpha.OverrideValue(0.08f);
+    _fluid->Alpha.OverrideValue(0.09f);
     _fluid->Metalness.OverrideValue(0.0f);
     
     _particles.Init( 9 );
     _particles.Scale = kScale;
     _particles.Alpha.OverrideValue(1.0f);
+    _particles.AlphaMin = 0.0f;
+    _particles.AlphaMultiplier = 2.0f;
+    _particles.VelocityMultiplier = 0.006f;
     
     _flowField = std::make_unique<FlowField>( _fluid.get() );
-    _flowField->Alpha.OverrideValue(1.0f);
-    _flowField->ColorWeight.OverrideValue(0.6f);
+    _flowField->Alpha.OverrideValue(0.0f);
+    _flowField->ColorWeight.OverrideValue(0.7f);
     
     _client.connectMessageEventHandler ( [&] ( const std::string& message )
     {
@@ -269,7 +276,16 @@ void NetworkedFluidApp::OnCleanup ( )
 
 void Init ( App::Settings * settings )
 {
+#if 0
     settings->setFullScreen();
+#else
+    #ifndef RUN_WINDOWED
+        settings->setAlwaysOnTop();
+        settings->setBorderless();
+    #else
+        settings->setWindowSize(1280, 720);
+    #endif
+#endif
 }
 
 #ifdef CINDER_MSW
