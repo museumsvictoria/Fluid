@@ -220,6 +220,7 @@
 		1981E9F421113DC300407E3D /* version.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = version.hpp; sourceTree = "<group>"; };
 		1981E9F821113E0800407E3D /* NetworkedFluidApp.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NetworkedFluidApp.cxx; path = ../src/NetworkedFluidApp.cxx; sourceTree = "<group>"; };
 		1981E9FA211140F500407E3D /* NetworkedFluidApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NetworkedFluidApp.h; path = ../src/NetworkedFluidApp.h; sourceTree = "<group>"; };
+		19A822A8214648D300D1AF1A /* QuickConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = QuickConfig.h; path = ../src/QuickConfig.h; sourceTree = "<group>"; };
 		19AD6F7520DCA667005D768E /* Property.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Property.cxx; path = ../src/Time/Property.cxx; sourceTree = "<group>"; };
 		19AD6F7620DCA668005D768E /* Sequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequencer.h; path = ../src/Time/Sequencer.h; sourceTree = "<group>"; };
 		19AD6F7820DCA668005D768E /* OSCChannel.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OSCChannel.cxx; path = ../src/Time/OSCChannel.cxx; sourceTree = "<group>"; };
@@ -314,6 +315,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				19A822A8214648D300D1AF1A /* QuickConfig.h */,
 				19AD6F8320DCA671005D768E /* FlowField.cxx */,
 				19AD6F8F20DCA671005D768E /* FlowField.h */,
 				19AD6F8A20DCA671005D768E /* Fluid.cxx */,

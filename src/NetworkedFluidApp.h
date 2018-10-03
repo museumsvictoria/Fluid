@@ -14,6 +14,7 @@
 #include "ParticleSystem.h"
 #include "FlowField.h"
 #include "WebSocketClient.h"
+#include "QuickConfig.h"
 
 class NetworkedFluidApp : public ci::app::App
 {
@@ -61,12 +62,24 @@ public:
     
 protected:
     
+    void                            OnKeyDown           ( const ci::app::KeyEvent& event );
+    
     void                            RenderScene         ( );
     void                            RenderUI            ( );
     
     Fluid::SimRef                   _fluid;
     ParticleSystem                  _particles;
     FlowFieldRef                    _flowField;
+    
+    float                           _logoScale{0.0f};
+    ci::vec2                        _gravity{ci::vec2(0)};
+    float                           _particleAlpha{1.0f};
+    float                           _flowFieldAlpha{0.0f};
+    float                           _flowFieldColorWeight{0.7f};
+    float                           _fluidAlpha{0.09f};
+    ci::gl::TextureRef              _logoTexture{nullptr};
+    Utils::QC                       _tweak;
+    bool                            _renderTweak{false};
     
     std::unordered_map<int, User>   _users;
     WebSocketClient                 _client;

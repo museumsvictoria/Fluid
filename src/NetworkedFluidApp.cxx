@@ -9,6 +9,7 @@
 #include "NetworkedFluidApp.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "CinderImGui.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -61,21 +62,64 @@ NetworkedFluidApp::NetworkedFluidApp ( )
     
     getSignalUpdate().connect ( std::bind ( &NetworkedFluidApp::OnUpdate, this ) );
     getWindow()->getSignalDraw().connect ( std::bind ( &NetworkedFluidApp::OnDraw, this ) );
+    getWindow()->getSignalKeyDown().connect( std::bind ( &NetworkedFluidApp::OnKeyDown, this, std::placeholders::_1 ) );
     getSignalCleanup().connect ( std::bind ( &NetworkedFluidApp::OnCleanup, this ) );
 }
 
 void NetworkedFluidApp::OnSetup ( )
 {
+    ui::initialize();
+    
     JsonTree tree { loadAsset ( "Config.json" ) };
     if ( tree.hasChild( "WebSocketEndpoint" ) )
     {
         _endpoint = tree["WebSocketEndpoint"].getValue();
     }
     
+    _tweak = Utils::QC( "Tweak.json", { { "LogoScale", &_logoScale },
+                                        { "Gravity", &_gravity },
+                                        { "ParticleAlpha", &_particleAlpha },
+                                        { "FlowFieldAlpha", &_flowFieldAlpha },
+                                        { "FlowFieldColorWeight", &_flowFieldColorWeight },
+                                        { "FluidAlpha", &_fluidAlpha } } );
+    
     _fluid = Fluid::Sim::Create( getWindowWidth(), getWindowHeight(), kScale );
     _fluid->Gravity.OverrideValue( vec2(0) );
     _fluid->Alpha.OverrideValue(0.09f);
     _fluid->Metalness.OverrideValue(0.0f);
+    
+    try
+    {
+        auto fmt = gl::Texture::Format().mipmap().minFilter(GL_LINEAR_MIPMAP_LINEAR).magFilter(GL_LINEAR);
+        _logoTexture = gl::Texture::create ( loadImage( app::loadAsset( "BP-LOGO-BLACK.png" ) ), fmt );
+        
+        if ( _logoTexture )
+        {
+            _fluid->EnableObstacles(true);
+            _fluid->ObstacleRenderHandler = [=] ( const Rectf& rect, bool topLeft )
+            {
+                if ( _fluid->AreObstaclesEnabled() && _logoScale > 0.0f )
+                {
+                    gl::ScopedMatrices m;
+                    gl::setMatricesWindow ( rect.getSize(), topLeft );
+                    gl::scale ( vec2 ( rect.getWidth() / (float)getWindowWidth() ) );
+                    
+                    float overhang = topLeft ? 1.001f : 1.0f;
+                    
+                    Rectf b = _logoTexture->getBounds();
+                    b += getWindowCenter();
+                    b -= b.getSize() / 2.0f;
+                    b.scaleCentered( _logoScale * overhang );
+                    
+                    gl::draw ( _logoTexture, b );
+                }
+            };
+        }
+            
+    }catch ( const std::exception& e )
+    {
+            
+    }
     
     _particles.Init( 9 );
     _particles.Scale = kScale;
@@ -231,9 +275,19 @@ void NetworkedFluidApp::OnUpdate ( )
         }
     }
     
+    _fluid->ObstaclesDirty = true;
+    
     _fluid->Update( dt );
     _particles.Update( dt, _fluid->GetVelocity() );
     _client.poll();
+}
+
+void NetworkedFluidApp::OnKeyDown ( const app::KeyEvent& event )
+{
+    if ( event.getChar() == '`' )
+    {
+        _renderTweak = !_renderTweak;
+    }
 }
 
 void NetworkedFluidApp::OnDraw ( )
@@ -248,6 +302,19 @@ void NetworkedFluidApp::RenderScene ( )
     gl::clear ( Colorf::black() );
     
     _fluid->Draw( getWindowBounds() );
+    
+    if ( _logoTexture && _logoScale > 0.0f )
+    {
+        gl::ScopedDepth depth { false };
+        gl::ScopedBlendAlpha blend;
+        if ( false && _fluid->ObstacleRenderHandler )
+        {
+            //gl::ScopedColor color { Colorf::black() };
+            gl::ScopedColor color { Colorf(1, 0, 0) };
+            _fluid->ObstacleRenderHandler ( getWindowBounds(), true );
+        }
+    }
+    
     _particles.Draw( _fluid->GetDensity() );
     _flowField->Draw();
 }
@@ -267,6 +334,26 @@ void NetworkedFluidApp::RenderUI ( )
         gl::ScopedColor c { ColorAf ( 1, 1, 0, std::sin ( getElapsedSeconds() * 3.0f ) * 0.5f + 0.5f ) };
         gl::drawSolidRect( Rectf ( 0, 0, 8, 8 ) );
     }
+    
+    static bool kFirst = true;
+    
+    if ( _renderTweak || kFirst ) // Make sure to commit the changes the first time around
+    {
+        ui::ScopedWindow window { "Tweak Settings" };
+        
+        //if ( kFirst || ui::DragFloat( "Logo Scale", &_logoScale, 0.001f, 0.0f, 3.0f ) ) { };
+        if ( kFirst || ui::DragFloat2( "Gravity", &_gravity.x, 0.001f, -2.0f, 2.0f ) ) _fluid->Gravity.OverrideValue( _gravity );
+        if ( kFirst || ui::DragFloat( "Particle Alpha", &_particleAlpha, 0.001f, 0.0f, 1.0f ) ) _particles.Alpha.OverrideValue( _particleAlpha );
+        if ( kFirst || ui::DragFloat( "Flow Field Alpha", &_flowFieldAlpha, 0.001f, 0.0f, 1.0f ) ) _flowField->Alpha.OverrideValue( _flowFieldAlpha );
+        if ( kFirst || ui::DragFloat( "Flow Field Color Weight", &_flowFieldColorWeight, 0.001f, 0.0f, 1.0f ) ) _flowField->ColorWeight.OverrideValue( _flowFieldColorWeight );
+        if ( kFirst || ui::DragFloat( "Fluid Alpha", &_fluidAlpha, 0.001f, 0.0f, 1.0f ) ) _fluid->Alpha.OverrideValue( _fluidAlpha );
+        
+        if ( ui::Button( "Save" ) ) _tweak.Save();
+        
+        kFirst = false;
+        
+        _fluid->DrawBuffers();
+    }
 }
 
 void NetworkedFluidApp::OnCleanup ( )
@@ -276,7 +363,7 @@ void NetworkedFluidApp::OnCleanup ( )
 
 void Init ( App::Settings * settings )
 {
-#if 0
+#if 1
     settings->setFullScreen();
 #else
     #ifndef RUN_WINDOWED
